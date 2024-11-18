@@ -3,7 +3,7 @@ const ImageCard = ({ image, description, modalOpen }) => {
   return (
     <>
       <img
-        className={s.image}
+        className={s.galleryImage}
         src={image}
         alt={description}
         onClick={modalOpen}
