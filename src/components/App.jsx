@@ -15,11 +15,6 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  // useEffect(() => {
-  //   if (totalPages=== page) {
-  //   }
-  // },[]);
-
   useEffect(() => {
     const getData = async () => {
       if (query.trim() === '') return;
@@ -54,15 +49,10 @@ const App = () => {
       {loading && <Loader />}
       {error && <ErrorMessage />}
       <ImageGallery images={images} />
-      {totalPages > page && <LoadMoreBtn loadMore={loadImages} />}
+      {query && totalPages > page && <LoadMoreBtn loadMore={loadImages} />}
       <ImageModal />
     </div>
   );
 };
 
 export default App;
-// {
-//   error && (
-//     <h2>Whoops, something went wrong! Please try reloading this page!</h2>
-//   );
-// }
