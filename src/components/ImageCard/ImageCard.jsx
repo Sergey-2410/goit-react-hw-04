@@ -1,8 +1,14 @@
-const ImageCard = ({ images, description }) => {
+import s from './ImageCard.module.css';
+const ImageCard = ({ image, description, modalOpen }) => {
   return (
-    <div>
-      <img src={images} alt={description} />
-    </div>
+    <>
+      <img
+        className={s.image}
+        src={image}
+        alt={description}
+        onClick={modalOpen}
+      />
+    </>
   );
 };
 export default ImageCard;

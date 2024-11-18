@@ -1,15 +1,19 @@
 import ImageCard from '../ImageCard/ImageCard';
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, modal }) => {
   return (
     <div>
       <ul>
         {images.map(image => (
           <li key={image.id}>
-            <ImageCard
-              images={image.urls.small}
-              description={image.alt_description}
-            />
+            <a href="#" onClick={e => e.preventDefault()}>
+              <ImageCard
+                image={image.urls.small}
+                description={image.alt_description}
+                modalOpen={() => modal(image.urls.regular)}
+              />
+            </a>
+
             <div>
               <p>
                 Description:
@@ -24,5 +28,3 @@ const ImageGallery = ({ images }) => {
   );
 };
 export default ImageGallery;
-// ({ urls: { regular, small }, id, likes, description, alt_description }
-// {image.urls.regular}

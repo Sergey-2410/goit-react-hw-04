@@ -7,6 +7,19 @@ import Loader from './Loader/Loader';
 import LoadMoreBtn from './LoadMoreBtn/LoadMoreBtn';
 import SearchBar from './SearchBar/SearchBar';
 import { fetchImages } from '../services/API';
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
+Modal.setAppElement('#root');
 const App = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,6 +27,17 @@ const App = () => {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectImage, setSelectImage] = useState('');
+
+  const openModal = image => {
+    setSelectImage(image);
+    setModalIsOpen(true);
+  };
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectImage('');
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -48,9 +72,16 @@ const App = () => {
       <SearchBar onChangeQuery={handleQuery} />
       {loading && <Loader />}
       {error && <ErrorMessage />}
-      <ImageGallery images={images} />
+      <ImageGallery modal={openModal} images={images} />
       {query && totalPages > page && <LoadMoreBtn loadMore={loadImages} />}
-      <ImageModal />
+      {selectImage && (
+        <ImageModal
+          stateIsOpen={modalIsOpen}
+          closeModal={closeModal}
+          style={customStyles}
+          image={selectImage}
+        />
+      )}
     </div>
   );
 };
