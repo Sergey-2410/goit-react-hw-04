@@ -11,33 +11,58 @@ const App = () => {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  // useEffect(() => {
+  //   if (totalPages=== page) {
+  //   }
+  // },[]);
+
   useEffect(() => {
     const getData = async () => {
+      if (query.trim() === '') return;
       try {
         setLoading(true);
         setError(false);
-        const data = await fetchImages();
-        setLoading(false);
-        setImages(data);
-      } catch (error) {
+        const { results, total_pages } = await fetchImages(query, page);
+        setTotalPages(total_pages);
+        setImages(prev => [...prev, ...results]);
+      } catch {
         setError(true);
       } finally {
         setLoading(false);
       }
     };
     getData();
-  }, []);
+  }, [query, page]);
+
+  const handleQuery = query => {
+    setImages([]);
+    setQuery(query);
+    setPage(1);
+  };
+
+  const loadImages = () => {
+    setPage(prev => prev + 1);
+  };
 
   return (
     <div>
-      <SearchBar />
+      <SearchBar onChangeQuery={handleQuery} />
       {loading && <Loader />}
+      {error && <ErrorMessage />}
       <ImageGallery images={images} />
-      <ErrorMessage />
-      <LoadMoreBtn />
+      {totalPages > page && <LoadMoreBtn loadMore={loadImages} />}
       <ImageModal />
     </div>
   );
 };
 
 export default App;
+// {
+//   error && (
+//     <h2>Whoops, something went wrong! Please try reloading this page!</h2>
+//   );
+// }
