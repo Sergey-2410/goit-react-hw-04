@@ -4,9 +4,10 @@ const SearchBar = ({ onChangeQuery }) => {
   const initialValues = {
     query: '',
   };
-  const handleSubmit = value => {
+  const handleSubmit = (value, { resetForm }) => {
     console.log(value);
     onChangeQuery(value.query);
+    resetForm();
   };
   return (
     <header className={s.header}>
@@ -15,6 +16,8 @@ const SearchBar = ({ onChangeQuery }) => {
           <Field
             className={s.input}
             name="query"
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
           />
           <button className={s.btnSubmit} type="submit">

@@ -70,10 +70,15 @@ const App = () => {
   return (
     <div>
       <SearchBar onChangeQuery={handleQuery} />
-      {loading && <Loader />}
+      {loading && images.length === 0 && <Loader position="top" />}
       {error && <ErrorMessage />}
       <ImageGallery modal={openModal} images={images} />
-      {query && totalPages > page && <LoadMoreBtn loadMore={loadImages} />}
+      {query && totalPages > page && (
+        <>
+          {loading && images.length > 0 && <Loader position="bottom" />}
+          <LoadMoreBtn loadMore={loadImages} />
+        </>
+      )}
       {selectImage && (
         <ImageModal
           stateIsOpen={modalIsOpen}

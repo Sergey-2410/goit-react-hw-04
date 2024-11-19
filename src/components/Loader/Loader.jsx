@@ -1,18 +1,18 @@
-import { RotatingLines } from 'react-loader-spinner';
+import { Rings } from 'react-loader-spinner';
+import s from './Loader.module.css';
 
-const Loader = () => {
+const Loader = ({ position = 'top' }) => {
   return (
-    <RotatingLines
-      visible={true}
-      height="96"
-      width="96"
-      color="grey"
-      strokeWidth="5"
-      animationDuration="0.75"
-      ariaLabel="rotating-lines-loading"
-      wrapperStyle={{}}
-      wrapperClass=""
-    />
+    <div className={`${s.wrapper} ${position === 'bottom' ? s.bottom : s.top}`}>
+      <Rings
+        visible={true}
+        height="80"
+        width="80"
+        color="#007BFF"
+        ariaLabel="loading-indicator"
+      />
+    </div>
   );
 };
+
 export default Loader;
