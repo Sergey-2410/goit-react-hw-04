@@ -8,6 +8,7 @@ import LoadMoreBtn from './LoadMoreBtn/LoadMoreBtn';
 import SearchBar from './SearchBar/SearchBar';
 import { fetchImages } from '../services/API';
 import Modal from 'react-modal';
+import toast from 'react-hot-toast';
 
 const customStyles = {
   content: {
@@ -16,7 +17,12 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
+    maxWidth: '90vw',
+    maxHeight: '90vh',
     transform: 'translate(-50%, -50%)',
+    overlay: {
+      background: 'rgba(30, 30, 30, 0.9)',
+    },
   },
 };
 Modal.setAppElement('#root');
@@ -40,6 +46,13 @@ const App = () => {
   };
 
   useEffect(() => {
+    if (images.length > 0 && totalPages === page) {
+      toast.dismiss();
+      toast.success('That is all I could find');
+    }
+  }, [images, totalPages, page]);
+
+  useEffect(() => {
     const getData = async () => {
       if (query.trim() === '') return;
       try {
@@ -58,6 +71,11 @@ const App = () => {
   }, [query, page]);
 
   const handleQuery = query => {
+    if (query.trim() === '') {
+      toast.dismiss();
+      toast.error('Error, the search field cannot be empty!');
+      return;
+    }
     setImages([]);
     setQuery(query);
     setPage(1);
